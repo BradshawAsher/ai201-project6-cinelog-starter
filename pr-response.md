@@ -39,9 +39,13 @@ I used AI (Claude Code) throughout this project as a coding assistant, reviewer,
 **How I verified no conflict remains:** `git status` shows a clean tree with no rebase in progress; `pytest tests/ -v` passes all 6 tests on the new base; and `git grep Integer -- models.py` shows only `year` and `rating` (both legitimately integers) — no integer `film_id` remains anywhere in the watchlist code.
 
 ## Commit History
-After addressing all six review comments, I rewrote the branch history so each commit is a single logical change with a conventional-commit message and there are no merge commits:
+After addressing all six review comments, I rewrote the branch history so each commit is a single logical change with a conventional-commit message and there are no merge commits. A later end-to-end check surfaced two bugs (unhandled endpoint errors and a missing `Film`–`WatchlistEntry` relationship), which I fixed in the four follow-up commits at the top:
 
 ```
+docs: update manual-test steps for watchlist error responses
+test: add get_watchlist ordering test
+fix: return 404/409 from watchlist add endpoint instead of unhandled errors
+fix: add Film-WatchlistEntry relationship so get_watchlist can resolve films
 docs: add pr-response documenting review responses and design decisions
 docs: update watchlist docstrings to reflect UUID film_id
 fix: sort watchlist by date added, newest first
@@ -51,8 +55,7 @@ fix: add deduplication check with watchlist-specific exceptions
 fix: rename save_to_watchlist to add_to_watchlist per naming convention
 feat: add watchlist model, service, and endpoints
 ```
-
-![git log](image.png)
+![git log](image-1.png)
 
 ## PR Description
 
