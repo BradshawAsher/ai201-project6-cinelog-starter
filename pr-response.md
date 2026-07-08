@@ -70,6 +70,6 @@ Adds a **watchlist** to CineLog so a user can save films they intend to watch (d
 1. Set up: `pip install -r requirements.txt`, then run the app (`python app.py`) or open a shell with an app context. You'll need an existing `user_id` and a `film_id` (both UUIDs) in the database.
 2. **Add to watchlist:** `POST /watchlist/<user_id>/add` with JSON body `{ "film_id": "<existing-film-uuid>" }` → expect `201` and the created entry (note `"public": false`).
 3. **View watchlist:** `GET /watchlist/<user_id>` → expect a JSON list, newest-added film first.
-4. **Duplicate guard:** repeat step 2 with the same film → expect an `AlreadyInWatchlistError` (not a second row); confirm only one entry exists.
-5. **Missing film:** `POST` with a `film_id` that doesn't exist → expect a `FilmNotFoundError`, not a database error.
+4. **Duplicate guard:** repeat step 2 with the same film → expect `409 Conflict` with an error message (not a second row); confirm only one entry exists.
+5. **Missing film:** `POST` with a `film_id` that doesn't exist → expect `404 Not Found` with an error message, not a raw 500 / database error.
 6. **Automated:** `pytest tests/ -v` → all tests pass (includes nonexistent-film and duplicate-entry cases for the watchlist).
